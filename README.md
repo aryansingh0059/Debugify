@@ -2,7 +2,7 @@
 
 Debugify is a high-performance, full-stack application designed to help developers ship **10x faster** by catching bugs, security flaws, and performance bottlenecks using state-of-the-art AI.
 
-![Debugify Hero](https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200)
+![Debugify Hero](Website.png)
 
 ## ✨ Key Features
 
