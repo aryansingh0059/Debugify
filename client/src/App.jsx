@@ -1,14 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import LandingPage from './pages/LandingPage';
-import AuthPage from './pages/AuthPage';
-import ReviewPage from './pages/ReviewPage';
-import FeaturesPage from './pages/FeaturesPage';
-import DocsPage from './pages/DocsPage';
-import BlogPage from './pages/BlogPage';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import SharedLayout from './components/SharedLayout';
 import ProfileModal from './components/ProfileModal';
 import SettingsModal from './components/SettingsModal';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+
+// ─── Lazy Loaded Pages ──────────────────────────────────────────────────────
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const AuthPage = lazy(() => import('./pages/AuthPage'));
+const ReviewPage = lazy(() => import('./pages/ReviewPage'));
+const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
+const DocsPage = lazy(() => import('./pages/DocsPage'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+
+/**
+ * Premium Loading Fallback for Suspense.
+ */
+const LuxuryLoading = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-[#050714] z-[999]">
+    <div className="relative">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        className="w-16 h-16 border-2 border-indigo-500/20 rounded-full"
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 border-t-2 border-indigo-500 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+      />
+      <div className="absolute inset-0 flex items-center justify-center text-xl">⚡</div>
+    </div>
+  </div>
+);
 
 /**
  * Main Application Layout for Debugify.
@@ -55,6 +78,7 @@ const App = () => {
           <LandingPage 
             onGetStarted={() => navigateTo(currentUser ? 'review' : 'auth')} 
             onLogin={() => navigateTo('auth')}
+            onHowItWorks={() => navigateTo('docs')}
             user={currentUser}
           />
         );
@@ -94,7 +118,9 @@ const App = () => {
         user={currentUser}
         onLogout={handleLogout}
       >
-        {renderPage()}
+        <Suspense fallback={<LuxuryLoading />}>
+          {renderPage()}
+        </Suspense>
       </SharedLayout>
 
       {/* Profile & Settings Modals */}

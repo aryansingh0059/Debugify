@@ -132,11 +132,7 @@ const ReviewPage = ({
       </motion.main>
 
       {/* Footer */}
-      <footer className="py-2.5 px-8 border-t border-white/5 bg-black/40 text-[10px] font-medium text-gray-500 flex justify-between uppercase tracking-[0.2em] relative z-10">
-        <div className="flex gap-4">
-          <span className="text-indigo-400/60">Logic: Llama-3.3-70b</span>
-          <span className="text-purple-400/60">Frontend: React + Framer</span>
-        </div>
+      <footer className="py-2.5 px-8 border-t border-white/5 bg-black/40 text-[10px] font-medium text-gray-500 flex justify-center uppercase tracking-[0.2em] relative z-10">
         <span>© 2026 Debugify Ecosystem • Infinite Intelligence</span>
       </footer>
 

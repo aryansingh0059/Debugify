@@ -1,70 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
-
-const FEATURES = [
-  {
-    icon: "⚡",
-    title: "Instant Bug Detection",
-    desc: "AI scans your code in milliseconds, identifying syntax errors, logic flaws, and edge cases before they reach production.",
-    color: "#6366f1",
-  },
-  {
-    icon: "🧠",
-    title: "Deep Code Understanding",
-    desc: "Context-aware analysis understands your entire codebase, not just isolated snippets.",
-    color: "#8b5cf6",
-  },
-  {
-    icon: "🔐",
-    title: "Security Vulnerability Scanner",
-    desc: "Detects SQL injections, XSS, CSRF, and 200+ security patterns automatically.",
-    color: "#06b6d4",
-  },
-  {
-    icon: "📊",
-    title: "Performance Profiling",
-    desc: "Spots inefficient loops, memory leaks, and algorithmic bottlenecks with fix suggestions.",
-    color: "#10b981",
-  },
-  {
-    icon: "🔁",
-    title: "Auto-Fix Suggestions",
-    desc: "One-click patch generation with explanations so your team learns as they ship.",
-    color: "#f59e0b",
-  },
-  {
-    icon: "🌐",
-    title: "Multi-Language Support",
-    desc: "Python, JavaScript, TypeScript, Go, Rust, Java, C++ — 40+ languages supported.",
-    color: "#ec4899",
-  },
-];
-
-const STATS = [
-  { value: "99.8%", label: "Bug Detection Rate" },
-  { value: "2.4s", label: "Avg. Review Time" },
-  { value: "40+", label: "Languages" },
-  { value: "50K+", label: "Devs Onboard" },
-];
-
-const CODE_LINES = [
-  { text: "function calculateTotal(items) {", color: "#c084fc" },
-  { text: "  let total = 0;", color: "#94a3b8" },
-  { text: "  for (let i = 0; i <= items.length; i++) {", color: "#f87171", error: true },
-  { text: "    total += items[i].price;", color: "#94a3b8" },
-  { text: "  }", color: "#94a3b8" },
-  { text: "  return total;", color: "#94a3b8" },
-  { text: "}", color: "#c084fc" },
-];
-
-const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  size: Math.random() * 3 + 1,
-  duration: Math.random() * 8 + 6,
-  delay: Math.random() * 4,
-}));
+import { FEATURES, STATS, CODE_LINES, PARTICLES } from "./constants";
 
 function HeroSubtitle() {
   const [text, setText] = useState("");
@@ -346,7 +282,7 @@ function FeatureCard({ feature, index }) {
   );
 }
 
-export default function LandingPage({ onGetStarted, onLogin, user }) {
+export default function LandingPage({ onGetStarted, onLogin, onHowItWorks, user }) {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, -80]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
@@ -456,6 +392,7 @@ export default function LandingPage({ onGetStarted, onLogin, user }) {
               <motion.button
                 whileHover={{ scale: 1.04, background: "rgba(255,255,255,0.1)" }}
                 whileTap={{ scale: 0.96 }}
+                onClick={onHowItWorks}
                 style={{
                   background: "rgba(255,255,255,0.05)",
                   border: "1px solid rgba(255,255,255,0.15)",
@@ -465,7 +402,7 @@ export default function LandingPage({ onGetStarted, onLogin, user }) {
                   fontSize: 16, fontWeight: 600, cursor: "pointer",
                 }}
               >
-                ▶ Watch Demo
+                📖 How it works
               </motion.button>
             </motion.div>
           </div>
@@ -658,14 +595,15 @@ export default function LandingPage({ onGetStarted, onLogin, user }) {
               </p>
               <div style={{ display: "flex", gap: 10 }}>
                 {[
-                  { label: "𝕏", title: "Twitter" },
-                  { label: "in", title: "LinkedIn" },
-                  { label: "gh", title: "GitHub" },
-                  { label: "yt", title: "YouTube" },
+                  { label: "in", title: "LinkedIn", url: "https://www.linkedin.com/in/aryan-kumar1705/" },
+                  { label: "gh", title: "GitHub", url: "https://github.com/aryansingh0059" },
                 ].map((s) => (
-                  <motion.div
+                  <motion.a
                     key={s.title}
-                    whileHover={{ scale: 1.12, background: "rgba(99,102,241,0.25)" }}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.12, background: "rgba(99,102,241,0.25)", borderColor: "rgba(99,102,241,0.5)" }}
                     title={s.title}
                     style={{
                       width: 36, height: 36, borderRadius: 9,
@@ -675,8 +613,9 @@ export default function LandingPage({ onGetStarted, onLogin, user }) {
                       fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.55)",
                       cursor: "pointer", transition: "all 0.2s",
                       userSelect: "none",
+                      textDecoration: "none"
                     }}
-                  >{s.label}</motion.div>
+                  >{s.label}</motion.a>
                 ))}
               </div>
             </motion.div>

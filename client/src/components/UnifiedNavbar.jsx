@@ -1,16 +1,44 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import ProfileDropdown from './ProfileDropdown';
 
 const UnifiedNavbar = ({ onNavigate, currentPage, user, onLogout }) => {
   const [showProfile, setShowProfile] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  
+  const { scrollY } = useScroll();
+
+  /**
+   * Monitor scroll to toggle navbar visibility and background aesthetic.
+   */
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() || 0;
+    
+    // Hide navbar when scrolling down past 150px
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+
+    // Add background when scrolled past 20px
+    setScrolled(latest > 20);
+  });
+
   const navLinks = ["Home", "Features", "Docs", "Blog"];
 
   return (
     <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-8 py-4 bg-transparent"
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className={`fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-8 py-4 transition-colors duration-300 ${
+        scrolled ? "bg-[#050714]/80 backdrop-blur-xl border-b border-white/5" : "bg-transparent"
+      }`}
     >
       {/* Logo */}
       <motion.button

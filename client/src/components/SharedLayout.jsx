@@ -1,15 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import UnifiedNavbar from './UnifiedNavbar';
-
-const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  size: Math.random() * 3 + 1,
-  duration: Math.random() * 8 + 6,
-  delay: Math.random() * 4,
-}));
+import { PARTICLES } from '../pages/constants';
 
 const FloatingParticles = () => (
   <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
